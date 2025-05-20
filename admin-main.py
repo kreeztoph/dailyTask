@@ -78,6 +78,7 @@ if not st.session_state.authenticated:
 
 
 # Main dashboard
+st.info('Test phase for project @LCY3. Page is under active changes!. Do not share access!. Access is granted only by admin @kmicalex. Reach out to @kmicalex for feedbacks, suggestions and comments.',icon="ℹ️")
 column_header_1,column_header_2 = st.columns([0.9,0.1])
 with column_header_1:
     st.title("Admin Analytics Dashboard")
