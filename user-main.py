@@ -140,7 +140,9 @@ if st.session_state.user_authenticated:
     st.session_state.last_interaction = time.time()
 
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("daily-task.json", scope)
+# Directly access Streamlit secrets and parse them as JSON
+credentials_dict = st.secrets["thunder"] 
+creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
 client = gspread.authorize(creds)
 dailytask_db = client.open("dailytaskDB")
 sheet = client.open("dailytaskDB").worksheet("Sheet1")
