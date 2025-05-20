@@ -107,7 +107,7 @@ roles = {
     "Area Manager Outbound Day Shift": "AM-OB-DS",
 }
 
-st.set_page_config(page_title="Ops Dashboard", layout="wide")
+st.set_page_config(page_title="LCY3 Operations Daily Task", layout="wide")
 
 if "first_load" not in st.session_state:
     st.cache_data.clear()
