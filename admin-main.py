@@ -7,9 +7,10 @@ import bcrypt
 st.set_page_config(layout='wide')
 
 def load_data(defined_sheet):
-    # Load sheet and append
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("daily-task.json", scope)
+    # Directly access Streamlit secrets and parse them as JSON
+    credentials_dict = st.secrets["thunder"] 
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
     client = gspread.authorize(creds)
     sheet = client.open("dailytaskDB").worksheet(defined_sheet)
     
@@ -17,7 +18,9 @@ def load_data(defined_sheet):
 
 def load_users_sheet(defined_sheet):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("daily-task.json", scope)
+    # Directly access Streamlit secrets and parse them as JSON
+    credentials_dict = st.secrets["thunder"] 
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
     client = gspread.authorize(creds)
     sheet = client.open("dailytaskDB").worksheet(defined_sheet)
     data = sheet.get_all_records()
