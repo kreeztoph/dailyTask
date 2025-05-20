@@ -222,6 +222,7 @@ if not st.session_state.get("user_authenticated", False):
 
 # --- Dashboard ---
 else:
+    st.info('Test phase for project @LCY3. Do not share access. Access is granted only by admin @kmicalex. Reach out to @kmicalex for feedbacks, suggestions and comments.',icon="ℹ️")
     name_part = st.session_state.user_email.split("@")[0].capitalize()
     name_part_data = st.session_state.user_email.split("@")[0].lower()
     user_daily_task = load_tasks_daily(name_part_data)
