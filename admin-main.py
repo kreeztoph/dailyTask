@@ -50,31 +50,79 @@ def logout():
     st.session_state.authenticated = False
     st.session_state.user_role = None
 
-# Login form inside st.form
-if not st.session_state.authenticated:
-    login_column_1,login_column_2,login_column_3 = st.columns(3)
-    with login_column_2:
-        st.title("Admin Login")
-        
-        with st.form("login_form"):
-            email = st.text_input("Email")
-            password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button("Login")
+# --- ADMIN LOGIN LOGIC ---
+if not st.session_state.get("authenticated", False):
+    st.cache_data.clear()
 
-            if submitted:
-                success, user_data = login(email, password)
-                if success:
-                    if user_data['Role'].lower() == 'admin':
-                        st.session_state.authenticated = True
-                        st.session_state.user_role = user_data['Role']
-                        st.toast("Login successful!")
-                        st.rerun()
+    if "first_time_email" not in st.session_state:
+        login_column_1, login_column_2, login_column_3 = st.columns(3)
+        with login_column_2:
+            st.title("Admin Login")
+
+            with st.form("login_form"):
+                email = st.text_input("Email").lower()
+                password = st.text_input("Password", type="password")
+                submitted = st.form_submit_button("Login")
+
+                if submitted:
+                    user_row = users_df[
+                        (users_df["Email"] == email) &
+                        (users_df["Role"].str.lower() == "admin") &
+                        (users_df["Status"].str.lower() == "active")
+                    ]
+
+                    if not user_row.empty:
+                        stored_password = user_row.iloc[0]["Password"]
+
+                        if stored_password == "":
+                            # First-time login detected
+                            st.session_state["first_time_email"] = email
+                            st.rerun()
+                        elif bcrypt.checkpw(password.encode(), stored_password.encode()):
+                            st.session_state.authenticated = True
+                            st.session_state.user_role = "admin"
+                            st.session_state.user_email = email
+                            st.toast("Login successful!")
+                            st.rerun()
+                        else:
+                            st.error("Invalid password.")
                     else:
-                        st.error("Access denied: Admins only.")
+                        st.error("Invalid credentials or inactive account.")
+    else:
+        # First-time password setup
+        st.warning("First-time login detected. Please create a new password.")
+
+        with st.form("SetNewAdminPasswordForm"):
+            new_pass = st.text_input("New Password", type="password", key="new_pass")
+            confirm_pass = st.text_input("Confirm New Password", type="password", key="confirm_pass")
+
+            if st.form_submit_button("Set New Password"):
+                if new_pass != confirm_pass:
+                    st.error("Passwords do not match.")
+                elif len(new_pass) < 6:
+                    st.error("Password too short. Minimum 6 characters.")
                 else:
-                    st.error("Invalid credentials")
-        
-        st.stop()
+                    hashed_pw = bcrypt.hashpw(new_pass.encode(), bcrypt.gensalt()).decode()
+
+                    try:
+                        # Update Google Sheet
+                        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+                        creds = ServiceAccountCredentials.from_json_keyfile_name("daily-task.json", scope)
+                        client = gspread.authorize(creds)
+                        sheet = client.open("dailytaskDB").worksheet("Users")
+
+                        user_list = sheet.get_all_records()
+                        for idx, row in enumerate(user_list, start=2):  # start at 2 to skip header
+                            if row["Email"].lower() == st.session_state["first_time_email"]:
+                                sheet.update_cell(idx, 2, hashed_pw)  # Update password (col 2)
+                                st.success("Password set successfully. Please log in again.")
+                                del st.session_state["first_time_email"]
+                                st.cache_data.clear()
+                                st.rerun()
+                    except Exception as e:
+                        st.error(f"Error updating password: {e}")
+
+    st.stop()
 
 
 # Main dashboard
