@@ -279,7 +279,6 @@ with tab_3:
             sheet_name = roles[selected_role_display]
             sheet = load_data(sheet_name)
 
-            # Action: Fetch
             if st.session_state.form_action == "Fetch":
                 data = sheet.get_all_records()
                 if not data:
@@ -287,8 +286,11 @@ with tab_3:
                 else:
                     df = pd.DataFrame(data)
                     st.session_state.df_original = df.copy()
-                    st.session_state.df_edited = df[["task"]].copy()
+                    
+                    # Keep task and time columns
+                    st.session_state.df_edited = df[["task", "time"]].copy()
                     st.success("Data fetched. You can now edit and then choose 'Save' to store changes.")
+
 
             # Action: Save
             elif st.session_state.form_action == "Save":
@@ -297,17 +299,29 @@ with tab_3:
                     edited_df = st.session_state.df_edited
                     updates_made = False
 
-                    for idx, new_task in enumerate(edited_df["task"]):
-                        if new_task != original_df.loc[idx, "task"]:
+                    for idx in range(len(edited_df)):
+                        new_task = edited_df.loc[idx, "task"]
+                        new_time = edited_df.loc[idx, "time"]
+                        old_task = original_df.loc[idx, "task"]
+                        old_time = original_df.loc[idx, "time"]
+
+                        # Update task if changed
+                        if new_task != old_task:
                             sheet.update_cell(idx + 2, original_df.columns.get_loc("task") + 1, new_task)
                             updates_made = True
 
+                        # Update time if changed
+                        if new_time != old_time:
+                            sheet.update_cell(idx + 2, original_df.columns.get_loc("time") + 1, new_time)
+                            updates_made = True
+
                     if updates_made:
-                        st.success("Tasks updated successfully in the sheet.")
+                        st.success("Tasks and/or time updated successfully in the sheet.")
                     else:
                         st.info("No changes detected.")
                 else:
                     st.error("No data to save. Please fetch data first.")
+
 
         # Always show editor if data is available
         if "df_edited" in st.session_state:
