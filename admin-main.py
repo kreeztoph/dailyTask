@@ -272,52 +272,51 @@ with tab_3:
 
         with st.form("role_data_form"):
             selected_role_display = st.selectbox("Select Role", list(roles.keys()))
-
-            # Hidden field to track fetch vs save
             action = st.radio("Action", ["Fetch", "Save"], horizontal=True, key="form_action", label_visibility="collapsed")
-
             submit = st.form_submit_button("Submit")
 
         if submit:
             sheet_name = roles[selected_role_display]
-            try:
-                sheet = load_data(sheet_name)
-                data = sheet.get_all_records()
+            sheet = load_data(sheet_name)
 
+            # Action: Fetch
+            if st.session_state.form_action == "Fetch":
+                data = sheet.get_all_records()
                 if not data:
                     st.warning("The selected sheet is currently empty.")
                 else:
                     df = pd.DataFrame(data)
+                    st.session_state.df_original = df.copy()
+                    st.session_state.df_edited = df[["task"]].copy()
+                    st.success("Data fetched. You can now edit and then choose 'Save' to store changes.")
 
-                    if st.session_state.form_action == "Fetch":
-                        st.session_state.df_original = df  # Save original to session
-                        st.session_state.df_edited = df[["task"]].copy()
+            # Action: Save
+            elif st.session_state.form_action == "Save":
+                if "df_original" in st.session_state and "df_edited" in st.session_state:
+                    original_df = st.session_state.df_original
+                    edited_df = st.session_state.df_edited
+                    updates_made = False
 
-                    if "df_edited" in st.session_state:
-                        st.write("🛠️ You can edit the **Task** column below. Changes will be saved back to the sheet.")
-                        edited_df = st.data_editor(
-                            st.session_state.df_edited,
-                            num_rows="dynamic",
-                            use_container_width=True,
-                            key="task_editor"
-                        )
-                        st.session_state.df_edited = edited_df  # Persist edits
+                    for idx, new_task in enumerate(edited_df["task"]):
+                        if new_task != original_df.loc[idx, "task"]:
+                            sheet.update_cell(idx + 2, original_df.columns.get_loc("task") + 1, new_task)
+                            updates_made = True
 
-                    if st.session_state.form_action == "Save" and "df_original" in st.session_state:
-                        updates_made = False
-                        original_df = st.session_state.df_original
-                        edited_df = st.session_state.df_edited
+                    if updates_made:
+                        st.success("Tasks updated successfully in the sheet.")
+                    else:
+                        st.info("No changes detected.")
+                else:
+                    st.error("No data to save. Please fetch data first.")
 
-                        for idx, new_task in enumerate(edited_df["task"]):
-                            if new_task != original_df.loc[idx, "task"]:
-                                sheet.update_cell(idx + 2, original_df.columns.get_loc("task") + 1, new_task)
-                                updates_made = True
-
-                        if updates_made:
-                            st.success("Tasks updated successfully in the sheet. Refresh the page to see changes.")
-                        else:
-                            st.info("No changes detected.")
-
-            except Exception as e:
-                st.error(f"Failed to load or update sheet '{sheet_name}': {e}")
+        # Always show editor if data is available
+        if "df_edited" in st.session_state:
+            st.write("🛠️ Edit the **Task** column below. After editing, choose 'Save' and click Submit.")
+            edited_df = st.data_editor(
+                st.session_state.df_edited,
+                num_rows="dynamic",
+                use_container_width=True,
+                key="task_editor"
+            )
+            st.session_state.df_edited = edited_df  # Persist changes
 
