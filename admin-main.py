@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 import bcrypt
 
-st.set_page_config(layout='wide')
+st.set_page_config(page_title="Daily Task Admin",layout='wide')
 
 def load_data(defined_sheet):
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
