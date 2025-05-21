@@ -102,12 +102,12 @@ with tab_1:
     with cols3:
         st.metric(label='Total users in DB (Admin)', value= len(users_df[users_df['Role'] == 'admin']),border=True)
 
-    st.subheader("Department Breakdown")
-    st.bar_chart(users_df['Department'].value_counts())
+    # st.subheader("Department Breakdown")
+    # st.bar_chart(users_df['Department'].value_counts())
 
-    st.subheader("Shift Start Time Distribution")
-    shift_start_counts = users_df['Start Time'].value_counts().sort_index()
-    st.line_chart(shift_start_counts)
+    # st.subheader("Shift Start Time Distribution")
+    # shift_start_counts = users_df['Start Time'].value_counts().sort_index()
+    # st.line_chart(shift_start_counts)
 
 
 with tab_2:
