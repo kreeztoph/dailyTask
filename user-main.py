@@ -145,7 +145,7 @@ credentials_dict = st.secrets["thunder"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
 client = gspread.authorize(creds)
 dailytask_db = client.open("dailytaskDB")
-sheet = client.open("dailytaskDB").worksheet("Sheet1")
+sheet = client.open("dailytaskDB").worksheet("user-task")
 
 df_users = load_users()
 
