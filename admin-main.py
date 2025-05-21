@@ -141,6 +141,7 @@ with tab_2:
 
     with tab2:
         tab2_col1, tab2_col2, tab2_col3 = st.columns(3)
+
         with tab2_col2:
             st.subheader("Reset User Password")
 
@@ -154,11 +155,31 @@ with tab_2:
                         user_list = sheet.get_all_records()
                         for idx, row in enumerate(user_list, start=2):  # Google Sheets rows start at 2 (1 is header)
                             if row["Email"] == email_to_reset:
-                                sheet.update_cell(idx, 2, "")  # Password is column 2
+                                sheet.update_cell(idx, 2, "")  # Reset Password (Column 2)
                                 st.success(f"Password for {email_to_reset} has been reset.")
                                 st.rerun()
                     except Exception as e:
                         st.error(f"Failed to reset password: {e}")
+
+        with tab2_col1:
+            st.subheader("Set User Status")
+
+            with st.form("set_status_form"):
+                email_to_update = st.selectbox("Select user to update status", users_df["Email"].values, key="status_user")
+                new_status = st.selectbox("Set status", ["active", "inactive"], key="new_status")
+                update_status_button = st.form_submit_button("Update Status")
+
+                if update_status_button:
+                    try:
+                        sheet = load_data('Users')
+                        user_list = sheet.get_all_records()
+                        for idx, row in enumerate(user_list, start=2):  # Google Sheets rows start at 2 (1 is header)
+                            if row["Email"] == email_to_update:
+                                sheet.update_cell(idx, 3, new_status)  # Assuming Status is column 3
+                                st.success(f"Status for {email_to_update} updated to {new_status}.")
+                                st.rerun()
+                    except Exception as e:
+                        st.error(f"Failed to update status: {e}")
 
 
     with tab3:
@@ -181,4 +202,72 @@ with tab_2:
                                 st.rerun()
                     except Exception as e:
                         st.error(f"Failed to delete user: {e}")
+
+with tab_3:
+    tab3_col1, tab3_col2, tab3_col3 = st.columns(3)
+    with tab3_col2:
+        st.subheader("View Role-Based Task Sheet")
+
+        roles = {
+            "Operations Manager Inbound Night Shift": "OM-IB-NS",
+            "Operations Manager Inbound Day Shift": "OM-IB-DS",
+            "Operations Manager Outbound Night Shift": "OM-OB-NS",
+            "Operations Manager Outbound Day Shift": "OM-OB-DS",
+            "Area Manager Inbound Night Shift": "AM-IB-NS",
+            "Area Manager Inbound Day Shift": "AM-IB-DS",
+            "Area Manager Outbound Night Shift": "AM-OB-NS",
+            "Area Manager Outbound Day Shift": "AM-OB-DS",
+        }
+
+
+        with st.form("role_data_form"):
+            selected_role_display = st.selectbox("Select Role", list(roles.keys()))
+
+            # Hidden field to track fetch vs save
+            action = st.radio("Action", ["Fetch", "Save"], horizontal=True, key="form_action", label_visibility="collapsed")
+
+            submit = st.form_submit_button("Submit")
+
+        if submit:
+            sheet_name = roles[selected_role_display]
+            try:
+                sheet = load_data(sheet_name)
+                data = sheet.get_all_records()
+
+                if not data:
+                    st.warning("The selected sheet is currently empty.")
+                else:
+                    df = pd.DataFrame(data)
+
+                    if st.session_state.form_action == "Fetch":
+                        st.session_state.df_original = df  # Save original to session
+                        st.session_state.df_edited = df[["task"]].copy()
+
+                    if "df_edited" in st.session_state:
+                        st.write("🛠️ You can edit the **Task** column below. Changes will be saved back to the sheet.")
+                        edited_df = st.data_editor(
+                            st.session_state.df_edited,
+                            num_rows="dynamic",
+                            use_container_width=True,
+                            key="task_editor"
+                        )
+                        st.session_state.df_edited = edited_df  # Persist edits
+
+                    if st.session_state.form_action == "Save" and "df_original" in st.session_state:
+                        updates_made = False
+                        original_df = st.session_state.df_original
+                        edited_df = st.session_state.df_edited
+
+                        for idx, new_task in enumerate(edited_df["task"]):
+                            if new_task != original_df.loc[idx, "task"]:
+                                sheet.update_cell(idx + 2, original_df.columns.get_loc("task") + 1, new_task)
+                                updates_made = True
+
+                        if updates_made:
+                            st.success("Tasks updated successfully in the sheet. Refresh the page to see changes.")
+                        else:
+                            st.info("No changes detected.")
+
+            except Exception as e:
+                st.error(f"Failed to load or update sheet '{sheet_name}': {e}")
 
