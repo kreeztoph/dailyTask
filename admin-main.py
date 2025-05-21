@@ -175,7 +175,7 @@ with tab_2:
                         user_list = sheet.get_all_records()
                         for idx, row in enumerate(user_list, start=2):  # Google Sheets rows start at 2 (1 is header)
                             if row["Email"] == email_to_update:
-                                sheet.update_cell(idx, 3, new_status)  # Assuming Status is column 3
+                                sheet.update_cell(idx, 4, new_status)  # Assuming Status is column 3
                                 st.success(f"Status for {email_to_update} updated to {new_status}.")
                                 st.rerun()
                     except Exception as e:
