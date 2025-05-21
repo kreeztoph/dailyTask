@@ -205,7 +205,9 @@ if not st.session_state.get("user_authenticated", False):
                     try:
                         # Update Google Sheet
                         scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-                        creds = ServiceAccountCredentials.from_json_keyfile_name("daily-task.json", scope)
+                        # Directly access Streamlit secrets and parse them as JSON
+                        credentials_dict = st.secrets["thunder"] 
+                        creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
                         client = gspread.authorize(creds)
                         sheet = client.open("dailytaskDB").worksheet("Users")
 
