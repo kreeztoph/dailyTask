@@ -9,11 +9,12 @@ from datetime import datetime, timedelta
 import pytz
 
 # --- Helper Functions ---
-def get_shift_date(role):
+def get_shift_date(role=None):
     tz = pytz.timezone("Europe/London")
     now = datetime.now(tz)
     today = now.date()
-    if "NS" in role:
+    
+    if role and "NS" in role:
         return today - timedelta(days=1) if now.time() < datetime.strptime("07:00", "%H:%M").time() else today
     return today
 
@@ -372,7 +373,7 @@ else:
                     st.session_state.selected_role = None
 
                 # Determine today's shift date
-                shift_date = get_shift_date(user_info['role'])
+                shift_date = get_shift_date()
 
                 # Get task sheet and existing role
                 task_sheet = dailytask_db.worksheet("user-daily-task")
@@ -411,7 +412,7 @@ else:
                     role = st.session_state.selected_role
                     is_night_shift = "NS" in roles[role]
                     # Continue with loading tasks using `role`
-                    shift_date = get_shift_date(user_info['role'])
+                    shift_date = get_shift_date()
                     tasks_df = load_df_users(task_sheet, user_info["Email"], shift_date, roles[role])
                     tz = pytz.timezone("Europe/London")
                     now = datetime.now(tz)
