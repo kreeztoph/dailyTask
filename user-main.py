@@ -49,7 +49,7 @@ def load_tasks_for_role(gc, role_sheet_name, user_email, name_part, shift_date, 
             task['time']
         ])
     
-    target_ws = gc.open("dailytaskDB").worksheet("user-daily-task-test")
+    target_ws = gc.open("dailytaskDB").worksheet("user-daily-task")
     target_ws.append_rows(rows_to_append)
 
 def update_task(sheet, row_idx, done, exempt, reason):
@@ -375,7 +375,7 @@ else:
                 shift_date = get_shift_date(user_info['role'])
 
                 # Get task sheet and existing role
-                task_sheet = dailytask_db.worksheet("user-daily-task-test")
+                task_sheet = dailytask_db.worksheet("user-daily-task")
                 existing_role_code = get_existing_role_for_today(task_sheet, user_info["Email"], shift_date)
 
                 if existing_role_code:
