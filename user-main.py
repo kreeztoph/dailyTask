@@ -259,10 +259,10 @@ else:
                     st.text_input(label="Fourth Task", key="tbr",label_visibility='hidden',value=user_daily_task.iloc[0]['task 4'] if not user_daily_task.empty else "")
                 with smiley1:
                     st.subheader("")  # spacing
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], key='fdf',label_visibility='hidden',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 1 emoji']) if not user_daily_task.empty else 0,)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱',''], label_visibility='hidden', key='fefeg',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 2 emoji']) if not user_daily_task.empty else 0,)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='fegegece',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 3 emoji']) if not user_daily_task.empty else 0,)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱',''], label_visibility='hidden', key='wscef', index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 4 emoji']) if not user_daily_task.empty else 0,)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], key='fdf',label_visibility='hidden',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 1 emoji']) if not user_daily_task.empty else 0,)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱',''], label_visibility='hidden', key='fefeg',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 2 emoji']) if not user_daily_task.empty else 0,)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='fegegece',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 3 emoji']) if not user_daily_task.empty else 0,)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱',''], label_visibility='hidden', key='wscef', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 4 emoji']) if not user_daily_task.empty else 0,)
 
                 with row1col1:    
                     st.subheader("Avoid")
@@ -273,10 +273,10 @@ else:
 
                 with smiley1:    
                     st.subheader("")  # spacing
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm1',index=['🐸','😊','🐶','🐱',''].index(user_daily_task.iloc[0]['task 5 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm2',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 6 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm3', index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 7 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm4', index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 8 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm1',index=['','🐸','😊','🐶','🐱',''].index(user_daily_task.iloc[0]['task 5 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm2',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 6 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm3', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 7 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm4', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 8 emoji']) if not user_daily_task.empty else 0)
 
                 # "Do First" Section
                 with row1col2:
@@ -294,16 +294,16 @@ else:
 
                 with smiley2:
                     st.subheader("")  # spacing
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm5',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 9 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm6',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 10 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm7',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 11 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm8',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 12 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm5',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 9 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm6',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 10 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm7',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 11 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm8',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 12 emoji']) if not user_daily_task.empty else 0)
                     
                     st.subheader("")  # spacing
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm9',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 13 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm10',index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 14 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm11', index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 15 emoji']) if not user_daily_task.empty else 0)
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm12', index=['🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 16 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm9',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 13 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm10',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 14 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm11', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 15 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm12', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 16 emoji']) if not user_daily_task.empty else 0)
                     
                 # Change submit button text if tasks exist
                 submit_button_label = "Update Task" if not df_users.empty else "Add Task"
