@@ -273,7 +273,7 @@ else:
 
                 with smiley1:    
                     st.subheader("")  # spacing
-                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm1',index=['','🐸','😊','🐶','🐱',''].index(user_daily_task.iloc[0]['task 5 emoji']) if not user_daily_task.empty else 0)
+                    st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm1',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 5 emoji']) if not user_daily_task.empty else 0)
                     st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm2',index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 6 emoji']) if not user_daily_task.empty else 0)
                     st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm3', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 7 emoji']) if not user_daily_task.empty else 0)
                     st.selectbox('Select a smiley', options=['','🐸','😊','🐶','🐱'], label_visibility='hidden', key='sm4', index=['','🐸','😊','🐶','🐱'].index(user_daily_task.iloc[0]['task 8 emoji']) if not user_daily_task.empty else 0)
